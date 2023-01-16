@@ -1,0 +1,73 @@
+game:GetService("UserInputService").InputBegan:Connect(function(u,i)
+    if i == false and u.KeyCode == Enum.KeyCode.V then
+        if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
+local bv = Instance.new("BodyPosition")
+bv.Name = "LadderStop"
+bv.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
+bv.D = 100
+bv.P = 100000
+bv.MaxForce = Vector3.new(1,1,1) * math.huge
+bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
+local ba = Instance.new("BodyThrust")
+ba.Name = "LadderStop"
+	ba.Parent = ladder.Main
+	ba.Force = Vector3.new(100000,100000,100000)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position
+end
+elseif i == false and u.KeyCode == Enum.KeyCode.B then
+    local ladder = nil
+    for i,v in pairs(workspace.playerPlaced:GetChildren()) do
+        if ladder == nil and v:FindFirstChild("Main") then
+            ladder = v
+        elseif v:FindFirstChild("Main") then
+            if (v.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < (ladder.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
+                ladder = v
+            end
+        end
+    end
+    if ladder ~= nil then
+local bv = Instance.new("BodyPosition")
+bv.Name = "LadderStop"
+bv.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
+bv.D = 100
+bv.P = 100000
+bv.MaxForce = Vector3.new(1,1,1) * math.huge
+bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
+local ba = Instance.new("BodyThrust")
+ba.Name = "LadderStop"
+	ba.Parent = ladder.Main
+	ba.Force = Vector3.new(100000,100000,100000)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position
+end
+elseif i == false and u.KeyCode == Enum.KeyCode.N then
+    for i,v in pairs(workspace.playerPlaced:GetDescendants()) do
+        if v.Name == "LadderStop" then
+        v:Destroy()
+        end
+    end
+elseif i == false and u.KeyCode == Enum.KeyCode.F then
+local ladder = nil
+    for i,v in pairs(workspace.playerPlaced:GetChildren()) do
+        if ladder == nil and v:FindFirstChild("Main") then
+            ladder = v
+        elseif v:FindFirstChild("Main") then
+            if (v.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < (ladder.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
+                ladder = v
+            end
+        end
+    end
+    if ladder ~= nil then
+        for i,v in pairs(ladder:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
+local bv = Instance.new("BodyVelocity")
+bv.Name = "SpaceshipLadder"
+bv.Parent = ladder.Main
+bv.P = math.huge
+bv.MaxForce = Vector3.new(1,1,1) * math.huge
+bv.Velocity = Vector3.new(0,100000,0)
+end
+end
+end)
