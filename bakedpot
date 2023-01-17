@@ -1,5 +1,39 @@
+local sgui = Instance.new("ScreenGui",game.Players.LocalPlayer.PlayerGui)
+sgui.ResetOnSpawn = false
+local velocityt = Instance.new("TextLabel",sgui)
+velocityt.BackgroundTransparency = 1 
+velocityt.Position = UDim2.new(.81,0,.5,0)
+velocityt.Size = UDim2.new(.18,0,.09,0)
+velocityt.Text = ""
+velocityt.TextColor3 = Color3.fromRGB(255,255,255)
+velocityt.TextScaled = true
+velocityt.TextStrokeColor3 = Color3.fromRGB(0,0,0)
+velocityt.TextStrokeTransparency = 0
+local tex = Instance.new("TextLabel",sgui)
+tex.BackgroundTransparency = 1 
+tex.Position = UDim2.new(.8625,0,.57,0)
+tex.Size = UDim2.new(.075,0,.075,0)
+tex.Text = ""
+tex.TextColor3 = Color3.fromRGB(255,255,255)
+tex.TextScaled = true
+tex.TextStrokeColor3 = Color3.fromRGB(0,0,0)
+tex.TextStrokeTransparency = 0
+game:GetService("RunService").Heartbeat:Connect(function()
+    if game.Players.LocalPlayer.Character ~= nil and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+    end
+    if not workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
+        velocityt.Text = "No Ladder"
+        tex.Text = ""
+    else 
+        velocityt.Text = "Ladder Velocity"
+        tex.Text = math.floor(workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main.Velocity.Magnitude*10)/10
+    end
+end)
 game:GetService("UserInputService").InputBegan:Connect(function(u,i)
-    if i == false and u.KeyCode == Enum.KeyCode.V then
+if i == false and u.KeyCode == Enum.KeyCode.V then
         if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
 local bv = Instance.new("BodyPosition")
 bv.Name = "LadderStop"
@@ -39,6 +73,36 @@ ba.Name = "LadderStop"
 	ba.Force = Vector3.new(100000,100000,100000)
 	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position
 end
+elseif i == false and u.KeyCode == Enum.KeyCode.R then
+     if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
+         for i,v in pairs(workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder"):GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
+         local bv = Instance.new("BodyVelocity")
+bv.Name = "LadderRetrieve"
+bv.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
+bv.P = math.huge
+bv.MaxForce = Vector3.new(1,1,1) * math.huge
+bv.Velocity = Vector3.new(0,-10000,0)
+local cf = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
+local f
+f = game:GetService("RunService").Heartbeat:Connect(function()
+    if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") ~= nil then
+        if game.Players.LocalPlayer.Backpack:FindFirstChild("Ladder") then
+game:GetService("Players").LocalPlayer.Backpack.Ladder.Event:FireServer("Destroy",workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder"))
+elseif game.Players.LocalPlayer.Character:FindFirstChild("Ladder") then
+    game:GetService("Players").LocalPlayer.Character.Ladder.Event:FireServer("Destroy",workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder"))
+end
+    end
+end)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = (workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main.CFrame)
+repeat game:GetService("RunService").Heartbeat:Wait()
+until not workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder")
+f:Disconnect()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = (cf)
+     end
 elseif i == false and u.KeyCode == Enum.KeyCode.N then
     for i,v in pairs(workspace.playerPlaced:GetDescendants()) do
         if v.Name == "LadderStop" then
