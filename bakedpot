@@ -35,18 +35,23 @@ end)
 game:GetService("UserInputService").InputBegan:Connect(function(u,i)
 if i == false and u.KeyCode == Enum.KeyCode.V then
         if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
+            for i,v in pairs(workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder"):GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
 local bv = Instance.new("BodyPosition")
 bv.Name = "LadderStop"
 bv.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
-bv.D = 100
+bv.D = 1000
 bv.P = 100000
 bv.MaxForce = Vector3.new(1,1,1) * math.huge
 bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
 local ba = Instance.new("BodyThrust")
 ba.Name = "LadderStop"
-	ba.Parent = ladder.Main
-	ba.Force = Vector3.new(100000,100000,100000)
-	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position
+	ba.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
+	ba.Force = Vector3.new(1000,1000,1000)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,1,0)
 end
 elseif i == false and u.KeyCode == Enum.KeyCode.B then
     local ladder = nil
@@ -60,18 +65,23 @@ elseif i == false and u.KeyCode == Enum.KeyCode.B then
         end
     end
     if ladder ~= nil then
+        for i,v in pairs(ladder:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
 local bv = Instance.new("BodyPosition")
 bv.Name = "LadderStop"
 bv.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
-bv.D = 100
+bv.D = 1000
 bv.P = 100000
 bv.MaxForce = Vector3.new(1,1,1) * math.huge
 bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
 local ba = Instance.new("BodyThrust")
 ba.Name = "LadderStop"
 	ba.Parent = ladder.Main
-	ba.Force = Vector3.new(100000,100000,100000)
-	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position
+	ba.Force = Vector3.new(1000,1000,1000)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,1,0)
 end
 elseif i == false and u.KeyCode == Enum.KeyCode.R then
      if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
@@ -107,6 +117,8 @@ elseif i == false and u.KeyCode == Enum.KeyCode.N then
     for i,v in pairs(workspace.playerPlaced:GetDescendants()) do
         if v.Name == "LadderStop" then
         v:Destroy()
+        elseif v:IsA("BasePart") then
+            v.CanCollide = true
         end
     end
 elseif i == false and u.KeyCode == Enum.KeyCode.F then
