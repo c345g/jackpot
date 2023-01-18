@@ -23,6 +23,14 @@ game:GetService("RunService").Heartbeat:Connect(function()
         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+        for i,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanTouch = false
+                if v:FindFirstChildOfClass("TouchTransmitter") then
+                    v:FindFirstChildOfClass("TouchTransmitter"):Destroy()
+                end
+            end
+        end
     end
     if not workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
         velocityt.Text = "No Ladder"
