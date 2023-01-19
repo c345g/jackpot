@@ -153,5 +153,59 @@ bv.P = math.huge
 bv.MaxForce = Vector3.new(1,1,1) * math.huge
 bv.Velocity = Vector3.new(0,100000,0)
 end
+elseif i == false and u.KeyCode == Enum.KeyCode.Y then
+local ladder = nil
+    for i,v in pairs(workspace.playerPlaced:GetChildren()) do
+        if ladder == nil and v:FindFirstChild("Main") then
+            ladder = v
+        elseif v:FindFirstChild("Main") then
+            if (v.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < (ladder.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
+                ladder = v
+            end
+        end
+    end
+    if ladder ~= nil then
+local bv = Instance.new("BodyVelocity")
+bv.Name = "LadderHop"
+bv.Parent = ladder.Main
+bv.P = math.huge
+bv.MaxForce = Vector3.new(1,1,1) * math.huge
+bv.Velocity = Vector3.new(0,50,0)
+game:GetService("Debris"):AddItem(bv,.01)
+end
+elseif i == false and u.KeyCode == Enum.KeyCode.T then
+local ladder = nil
+    for i,v in pairs(workspace.playerPlaced:GetChildren()) do
+        if ladder == nil and v:FindFirstChild("Main") then
+            ladder = v
+        elseif v:FindFirstChild("Main") then
+            if (v.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < (ladder.Main.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
+                ladder = v
+            end
+        end
+    end
+    if ladder ~= nil then
+        for i,v in pairs(ladder:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
+    local bv = Instance.new("BodyPosition")
+bv.Name = "LadderStop"
+bv.Parent = ladder.Main
+bv.D = 1000
+bv.P = 100000
+bv.MaxForce = Vector3.new(1,1,1) * math.huge
+bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
+wait(.2)
+if ladder ~= nil then
+    bv:Destroy()
+    for i,v in pairs(ladder:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = true
+            end
+        end
+end
+end
 end
 end)
