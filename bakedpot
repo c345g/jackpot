@@ -1,3 +1,6 @@
+local rp = RaycastParams.new()
+rp.FilterType = Enum.RaycastFilterType.Blacklist
+rp.FilterDescendantsInstances = {workspace.Areas}
 local sgui = Instance.new("ScreenGui",game.Players.LocalPlayer.PlayerGui)
 sgui.ResetOnSpawn = false
 local velocityt = Instance.new("TextLabel",sgui)
@@ -59,7 +62,7 @@ local ba = Instance.new("BodyThrust")
 ba.Name = "LadderStop"
 	ba.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
 	ba.Force = Vector3.new(1000,1000,1000)
-	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,1,0)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,5.5,0)
 end
 elseif i == false and u.KeyCode == Enum.KeyCode.B then
     local ladder = nil
@@ -89,7 +92,7 @@ local ba = Instance.new("BodyThrust")
 ba.Name = "LadderStop"
 	ba.Parent = ladder.Main
 	ba.Force = Vector3.new(1000,1000,1000)
-	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,1,0)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,5.5,0)
 end
 elseif i == false and u.KeyCode == Enum.KeyCode.R then
      if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
@@ -185,6 +188,8 @@ local ladder = nil
         end
     end
     if ladder ~= nil then
+		local rayman = workspace:Raycast(game.Players.LocalPlayer:GetMouse().Hit.Position+Vector3.new(0,1,0),Vector3.new(0,-6.5,0))
+		if rayman and rayman.Instance.CanCollide == true then
         for i,v in pairs(ladder:GetDescendants()) do
             if v:IsA("BasePart") then
                 v.CanCollide = false
@@ -196,15 +201,38 @@ bv.Parent = ladder.Main
 bv.D = 1000
 bv.P = 100000
 bv.MaxForce = Vector3.new(1,1,1) * math.huge
-bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
-wait(.2)
+bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,(5.5 - rayman.Distance) + 1,0)
+wait(.3)
 if ladder ~= nil then
     bv:Destroy()
     for i,v in pairs(ladder:GetDescendants()) do
             if v:IsA("BasePart") then
                 v.CanCollide = true
             end
+    end
+end
+elseif (rayman and rayman.Instance.CanCollide == false) or not rayman then
+    for i,v in pairs(ladder:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
         end
+    local bv = Instance.new("BodyPosition")
+bv.Name = "LadderStop"
+bv.Parent = ladder.Main
+bv.D = 1000
+bv.P = 100000
+bv.MaxForce = Vector3.new(1,1,1) * math.huge
+bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
+wait(.3)
+if ladder ~= nil then
+    bv:Destroy()
+    for i,v in pairs(ladder:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = true
+            end
+    end
+end
 end
 end
 end
