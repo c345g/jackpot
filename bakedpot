@@ -1,3 +1,6 @@
+_G.spinintensity = 1000
+_G.forceheight = 1000000
+
 local rp = RaycastParams.new()
 rp.FilterType = Enum.RaycastFilterType.Blacklist
 rp.FilterDescendantsInstances = {workspace.Areas}
@@ -61,8 +64,8 @@ bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
 local ba = Instance.new("BodyThrust")
 ba.Name = "LadderStop"
 	ba.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
-	ba.Force = Vector3.new(1000,1000,1000)
-	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,5.5,0)
+	ba.Force = Vector3.new(_G.spinintensity,_G.spinintensity,_G.spinintensity)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,_G.forceheight,0)
 end
 elseif i == false and u.KeyCode == Enum.KeyCode.B then
     local ladder = nil
@@ -91,16 +94,18 @@ bv.Position = game.Players.LocalPlayer:GetMouse().Hit.Position
 local ba = Instance.new("BodyThrust")
 ba.Name = "LadderStop"
 	ba.Parent = ladder.Main
-	ba.Force = Vector3.new(1000,1000,1000)
-	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,5.5,0)
+	ba.Force = Vector3.new(_G.spinintensity,_G.spinintensity,_G.spinintensity)
+	ba.Location = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,_G.forceheight,0)
 end
 elseif i == false and u.KeyCode == Enum.KeyCode.R then
      if workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder") then
          for i,v in pairs(workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder"):GetDescendants()) do
-            if v:IsA("BasePart") then
-                v.CanCollide = false
-            end
+        if v.Name == "LadderStop" then
+        v:Destroy()
+        elseif v:IsA("BasePart") then
+            v.CanCollide = false
         end
+    end
          local bv = Instance.new("BodyVelocity")
 bv.Name = "LadderRetrieve"
 bv.Parent = workspace.playerPlaced:FindFirstChild(game.Players.LocalPlayer.Character.Name.."_ladder").Main
